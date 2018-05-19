@@ -249,6 +249,7 @@ dotObjects[xx, yy].GetComponent<Node>().state == Node._nodeState.permanent)
                 line1Done = true;
                 goto line1result;
             }
+            Debug.Log("s");
             line1[increament1] = nextObject;
         }
         line1result:
@@ -278,50 +279,57 @@ dotObjects[xx, yy].GetComponent<Node>().state == Node._nodeState.permanent)
         bool secondDone = false;
         foreach (GameObject dot in line1)
         {
-            Node node = dot.GetComponent<Node>();
-            int xxx = node.xx;
-            int yyy = node.yy;
-            GameObject nextOne = NextOne(Node._nodeState.dead, xxx, yyy, out xxx, out yyy,out enemyDetected1);
-            if (nextOne != null)
+            if(dot != null)
             {
-                Debug.Log("yes");
-            }
-            while (!firstDone)
-            {
-                if (nextOne == null)
+                Node node = dot.GetComponent<Node>();
+                int xxx = node.xx;
+                int yyy = node.yy;
+                while (!firstDone)
                 {
-                    firstDone = true;
-                    continue;
+                    GameObject nextOne = NextOne(Node._nodeState.dead, xxx, yyy, out xxx, out yyy, out enemyDetected1);
+                    if (nextOne == null)
+                    {
+                        firstDone = true;
+                        continue;
+                    }
+                    inc1++;
+                    basket1[inc1] = nextOne;
                 }
-                inc1++;
-                Debug.Log(inc1);
-                basket1[inc1] = nextOne;
+                firstDone = false;
             }
-            firstDone = false;
         }
         foreach (GameObject dot in line2)
         {
-            Node node = dot.GetComponent<Node>();
-            int xxx = node.xx;
-            int yyy = node.yy;
-            GameObject nextOne = NextOne(Node._nodeState.dead, xxx, yyy, out xxx, out yyy, out enemyDetected2);
-            while (!secondDone)
+            if(dot != null)
             {
-                if (nextOne == null)
+                Node node = dot.GetComponent<Node>();
+                int xxx = node.xx;
+                int yyy = node.yy;
+                while (!secondDone)
                 {
-                    secondDone = true;
-                    continue;
+                    GameObject nextOne = NextOne(Node._nodeState.dead, xxx, yyy, out xxx, out yyy, out enemyDetected2);
+
+                    if (nextOne == null)
+                    {
+                        secondDone = true;
+                        continue;
+                    }
+                    Debug.Log(nextOne.name);
+                    inc2++;
+                    basket2[inc2] = nextOne;
                 }
-                inc2++;
-                basket2[inc2] = nextOne;
+                secondDone = false;
             }
-            secondDone = false;
+
         }
         Debug.Log("3");
         foreach (GameObject dot in basket1)
         {
-            GameObject mesh = dot.GetComponent<Node>().mesh;
-            Destroy(mesh);
+            if(dot != null)
+            {
+                GameObject mesh = dot.GetComponent<Node>().mesh;
+                mesh.GetComponent<MeshRenderer>().material = deadZone;
+            }
         }
         foreach(GameObject dot in dotObjects)
         {
@@ -368,7 +376,7 @@ dotObjects[xx, yy].GetComponent<Node>().state == Node._nodeState.permanent)
         }
         if (yyy - 1 >= 0)
         {
-            if (dotObjects[xxx, yyy - 1].GetComponent<Node>().state == checkState
+            if (dotObjects[xxx, yyy - 1].GetComponent<Node>().state == checkState && !dotObjects[xxx, yyy - 1].GetComponent<Node>().breakpoint
             && !dotObjects[xxx, yyy - 1].GetComponent<Node>().drawCheck)
             {
                 dotObjects[xxx, yyy - 1].GetComponent<Node>().drawCheck = true;
@@ -442,7 +450,7 @@ dotObjects[xx, yy].GetComponent<Node>().state == Node._nodeState.permanent)
         }
         if (yyy - 1 >= 0)
         {
-            if (dotObjects[xxx, yyy - 1].GetComponent<Node>().state == state
+            if (dotObjects[xxx, yyy - 1].GetComponent<Node>().state == state && !dotObjects[xxx, yyy - 1].GetComponent<Node>().breakpoint
             && !dotObjects[xxx, yyy - 1].GetComponent<Node>().drawCheck)
             {
                 dotObjects[xxx, yyy - 1].GetComponent<Node>().drawCheck = true;
@@ -459,8 +467,8 @@ dotObjects[xx, yy].GetComponent<Node>().state == Node._nodeState.permanent)
                 return dotObjects[xxx, yyy - 1];
             }
         }
-        xSave = xxx;
-        ySave = yyy;
+        xSave = -1;
+        ySave = -1;
         enemyDetected = false;
         return null;
     }
