@@ -77,7 +77,7 @@ public class Boarder : MonoBehaviour {
     }
 
 	void CircuitMeshCreate(int i,int j,int textureBorderX){
-		GameObject circuit = new GameObject ("Circuit "+ i+","+j, typeof(MeshFilter), typeof(MeshRenderer));
+		GameObject circuit = new GameObject ("Circuit "+ i+","+j, typeof(MeshFilter), typeof(MeshRenderer),typeof(MeshController));
 		circuit.transform.position = dotVectors [i,j];
         circuit.GetComponent<MeshRenderer>().allowOcclusionWhenDynamic = false;
 
@@ -119,7 +119,8 @@ public class Boarder : MonoBehaviour {
 		MeshRenderer m_Renderer = circuit.transform.GetComponent<MeshRenderer> ();
         // m_Renderer.sharedMaterial = material;
         m_Renderer.material = material;
-		circuit.transform.SetParent (this.Meshes.transform);
+        dotObjects[i, j].GetComponent<Node>().mesh = circuit;
+        circuit.transform.SetParent (this.Meshes.transform);
 	}
 
 }

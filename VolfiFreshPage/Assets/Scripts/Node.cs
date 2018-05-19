@@ -6,11 +6,10 @@ public class Node : MonoBehaviour
 {
     public enum _nodeState
     {
-        walkable,
-        danger,
+        walkable,//walkable blocks that wıthout space
         permanent,//char walked by space on this dot while it is danger, so it has turned permanent.
-        space,
-        dead
+        space,//keycode.space and walk
+        dead//blocks in cutted area
     }
     public enum _childType
     {
@@ -20,6 +19,7 @@ public class Node : MonoBehaviour
     }
     public _childType childType = _childType.no;
     public GameObject boarder;
+    [HideInInspector]
     public _nodeState state = _nodeState.dead;
     public GameObject[,] dotObjects;
     public int sizeOfMap;
@@ -28,9 +28,18 @@ public class Node : MonoBehaviour
     public bool pointersAssigned = false;
     private int counter = 0;
     public bool breakpoint = false;
-
+    public bool drawCheck = false;
+    public bool enemyOnIt = false;
+    public GameObject mesh;
+    public bool refresh = false;
+ 
     private void Update()
     {
+        if (refresh)
+        {
+            refresh = false;
+            breakpoint = false;
+        }
         if (!pointersAssigned)
         {
             dotObjects = boarder.GetComponent<Boarder>().dotObjects;
@@ -67,8 +76,6 @@ public class Node : MonoBehaviour
                             setChildType(_childType.right);
                         }
                     }
-                    break;
-                case _nodeState.danger:
                     break;
                 case _nodeState.permanent:
                     if (yy - 1 >= 0)

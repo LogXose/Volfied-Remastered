@@ -53,9 +53,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   childType: 2
   boarder: {fileID: 0}
-  state: 4
+  state: 3
   sizeOfMap: 0
   xx: 0
   yy: 0
   pointersAssigned: 0
   breakpoint: 0
+  drawCheck: 0
+  enemyOnIt: 0
+  mesh: {fileID: 0}

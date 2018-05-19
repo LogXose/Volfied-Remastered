@@ -252,6 +252,7 @@ MonoBehaviour:
   xx: 0
   yy: 0
   TextureBorder: 0
+  deadZone: {fileID: 2100000, guid: d5b562585952833479a1dcfaf2f5f410, type: 2}
 --- !u!65 &1251651762
 BoxCollider:
   m_ObjectHideFlags: 0
