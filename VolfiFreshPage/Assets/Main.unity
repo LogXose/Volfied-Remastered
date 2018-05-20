@@ -147,6 +147,8 @@ MonoBehaviour:
     type: 2}
   downPrefab: {fileID: 1031384046784142, guid: 8bdb16ddce5cc644caa33d20030a338b, type: 2}
   eski: 0
+  enemyX: 30
+  enemyY: 30
 --- !u!4 &585349648
 Transform:
   m_ObjectHideFlags: 0
@@ -313,8 +315,8 @@ Camera:
   m_GameObject: {fileID: 1729267640}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 4
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0.019607844}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.1102941, g: 0.09540552, b: 0.012164789, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0

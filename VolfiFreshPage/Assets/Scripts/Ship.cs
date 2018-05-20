@@ -249,8 +249,8 @@ dotObjects[xx, yy].GetComponent<Node>().state == Node._nodeState.permanent)
                 line1Done = true;
                 goto line1result;
             }
-            Debug.Log("s");
             line1[increament1] = nextObject;
+            increament1++;
         }
         line1result:
         while (!line2Done)
@@ -263,11 +263,13 @@ dotObjects[xx, yy].GetComponent<Node>().state == Node._nodeState.permanent)
                 goto result2;
             }
             line2[increament2] = nextObject;
+            increament2++;
         }
         result2:
         #endregion
         #region deadHunt
-
+        GameObject[] line1Save = (GameObject[])line1.Clone();
+        GameObject[] line2Save = (GameObject[])line2.Clone();
         //dead hunt
         GameObject[] basket1 = new GameObject[(int)Mathf.Pow((float)TextureBorder, 2)];
         GameObject[] basket2 = new GameObject[(int)Mathf.Pow((float)TextureBorder, 2)];
@@ -277,6 +279,8 @@ dotObjects[xx, yy].GetComponent<Node>().state == Node._nodeState.permanent)
         int inc2 = -1;
         bool firstDone = false;
         bool secondDone = false;
+        List<GameObject> list1 = new List<GameObject>(line1);
+        List<GameObject> list2 = new List<GameObject>(line2);
         foreach (GameObject dot in line1)
         {
             if(dot != null)
@@ -292,12 +296,18 @@ dotObjects[xx, yy].GetComponent<Node>().state == Node._nodeState.permanent)
                         firstDone = true;
                         continue;
                     }
+                    nextOne.GetComponent<Node>().lineIndex = 1;
                     inc1++;
                     basket1[inc1] = nextOne;
+                    if (!list1.Contains(nextOne))
+                    {
+                        line1[inc1] = nextOne;
+                    }                    
                 }
                 firstDone = false;
             }
         }
+        
         foreach (GameObject dot in line2)
         {
             if(dot != null)
@@ -314,24 +324,406 @@ dotObjects[xx, yy].GetComponent<Node>().state == Node._nodeState.permanent)
                         secondDone = true;
                         continue;
                     }
-                    Debug.Log(nextOne.name);
+                    nextOne.GetComponent<Node>().lineIndex = 2;
                     inc2++;
                     basket2[inc2] = nextOne;
+                    if (list2.Contains(nextOne))
+                    {
+                        line2[inc2] = nextOne;
+                    }
+
                 }
                 secondDone = false;
             }
 
         }
-        Debug.Log("3");
+        List<GameObject> listUnchecked = new List<GameObject>();
+        foreach (GameObject item in dotObjects)
+        {
+            if (item.GetComponent<Node>().lineIndex == 0 && item.GetComponent<Node>().state == Node._nodeState.dead)
+            {
+                int xa = item.GetComponent<Node>().xx;
+                int ya = item.GetComponent<Node>().yy;
+                xa++;
+                if (dotObjects[xa, ya].GetComponent<Node>().state == Node._nodeState.dead &&
+                    (dotObjects[xa, ya].GetComponent<Node>().lineIndex != 0))
+                {
+                    item.GetComponent<Node>().lineIndex = dotObjects[xa, ya].GetComponent<Node>().lineIndex;
+                    if (item.GetComponent<Node>().lineIndex == 1)
+                    {
+                        inc1++;
+                        basket1[inc1] = item;
+                        if (dotObjects[xa, ya].GetComponent<Node>().enemyOnIt == true)
+                        {
+                            enemyDetected1 = true;
+                        }
+                        continue;
+                    }
+                    else if (item.GetComponent<Node>().lineIndex == 2)
+                    {
+                        inc2++;
+                        basket2[inc2] = item;
+                        if (dotObjects[xa, ya].GetComponent<Node>().enemyOnIt == true)
+                        {
+                            enemyDetected2 = true;
+                        }
+                        continue;
+                    }
+                }
+                xa -= 2;
+                if (dotObjects[xa, ya].GetComponent<Node>().state == Node._nodeState.dead &&
+                    (dotObjects[xa, ya].GetComponent<Node>().lineIndex != 0))
+                {
+                    item.GetComponent<Node>().lineIndex = dotObjects[xa, ya].GetComponent<Node>().lineIndex;
+                    if (item.GetComponent<Node>().lineIndex == 1)
+                    {
+                        inc1++;
+                        basket1[inc1] = item;
+                        if (dotObjects[xa, ya].GetComponent<Node>().enemyOnIt == true)
+                        {
+                            enemyDetected1 = true;
+                        }
+                        continue;
+                    }
+                    else if (item.GetComponent<Node>().lineIndex == 2)
+                    {
+                        inc2++;
+                        basket2[inc2] = item;
+                        if (dotObjects[xa, ya].GetComponent<Node>().enemyOnIt == true)
+                        {
+                            enemyDetected2 = true;
+                        }
+                        continue;
+                    }
+                }
+                ya++; xa++;
+                if (dotObjects[xa, ya].GetComponent<Node>().state == Node._nodeState.dead &&
+                    (dotObjects[xa, ya].GetComponent<Node>().lineIndex != 0))
+                {
+                    item.GetComponent<Node>().lineIndex = dotObjects[xa, ya].GetComponent<Node>().lineIndex;
+                    if (item.GetComponent<Node>().lineIndex == 1)
+                    {
+                        inc1++;
+                        basket1[inc1] = item;
+                        if (dotObjects[xa, ya].GetComponent<Node>().enemyOnIt == true)
+                        {
+                            enemyDetected1 = true;
+                        }
+                        continue;
+                    }
+                    else if (item.GetComponent<Node>().lineIndex == 2)
+                    {
+                        inc2++;
+                        basket2[inc2] = item;
+                        if (dotObjects[xa, ya].GetComponent<Node>().enemyOnIt == true)
+                        {
+                            enemyDetected2 = true;
+                        }
+                        continue;
+                    }
+                }
+                ya -= 2;
+                if (dotObjects[xa, ya].GetComponent<Node>().state == Node._nodeState.dead &&
+                    (dotObjects[xa, ya].GetComponent<Node>().lineIndex != 0))
+                {
+                    item.GetComponent<Node>().lineIndex = dotObjects[xa, ya].GetComponent<Node>().lineIndex;
+                    if (item.GetComponent<Node>().lineIndex == 1)
+                    {
+                        inc1++;
+                        basket1[inc1] = item;
+                        if (dotObjects[xa, ya].GetComponent<Node>().enemyOnIt == true)
+                        {
+                            enemyDetected1 = true;
+                        }
+                        continue;
+                    }
+                    else if (item.GetComponent<Node>().lineIndex == 2)
+                    {
+                        inc2++;
+                        basket2[inc2] = item;
+                        if (dotObjects[xa, ya].GetComponent<Node>().enemyOnIt == true)
+                        {
+                            enemyDetected2 = true;
+                        }
+                        continue;
+                    }
+                }
+                listUnchecked.Add(item);
+            }
+        }
+        int count = listUnchecked.Count;
+        int nom = 0;
+        while(nom != count)
+        {
+            foreach (GameObject item in listUnchecked)
+            {
+                if (item.GetComponent<Node>().lineIndex == 0 && item.GetComponent<Node>().state == Node._nodeState.dead)
+                {
+                    int xa = item.GetComponent<Node>().xx;
+                    int ya = item.GetComponent<Node>().yy;
+                    xa++;
+                    if (dotObjects[xa, ya].GetComponent<Node>().state == Node._nodeState.dead &&
+                        (dotObjects[xa, ya].GetComponent<Node>().lineIndex != 0))
+                    {
+                        item.GetComponent<Node>().lineIndex = dotObjects[xa, ya].GetComponent<Node>().lineIndex;
+                        if (item.GetComponent<Node>().lineIndex == 1)
+                        {
+                            inc1++;
+                            basket1[inc1] = item;
+                            listUnchecked.Remove(item);
+                            nom++;
+                            if(dotObjects[xa, ya].GetComponent<Node>().enemyOnIt == true)
+                            {
+                                enemyDetected1 = true;
+                            }
+                            continue;
+                        }
+                        else if (item.GetComponent<Node>().lineIndex == 2)
+                        {
+                            inc2++;
+                            basket2[inc2] = item;
+                            listUnchecked.Remove(item);
+                            nom++;
+                            if (dotObjects[xa, ya].GetComponent<Node>().enemyOnIt == true)
+                            {
+                                enemyDetected2 = true;
+                            }
+                            continue;
+                        }
+                    }
+                    xa -= 2;
+                    if (dotObjects[xa, ya].GetComponent<Node>().state == Node._nodeState.dead &&
+    (dotObjects[xa, ya].GetComponent<Node>().lineIndex != 0))
+                    {
+                        item.GetComponent<Node>().lineIndex = dotObjects[xa, ya].GetComponent<Node>().lineIndex;
+                        if (item.GetComponent<Node>().lineIndex == 1)
+                        {
+                            inc1++;
+                            basket1[inc1] = item;
+                            listUnchecked.Remove(item);
+                            nom++;
+                            if (dotObjects[xa, ya].GetComponent<Node>().enemyOnIt == true)
+                            {
+                                enemyDetected1 = true;
+                            }
+                            continue;
+                        }
+                        else if (item.GetComponent<Node>().lineIndex == 2)
+                        {
+                            inc2++;
+                            basket2[inc2] = item;
+                            listUnchecked.Remove(item);
+                            nom++;
+                            if (dotObjects[xa, ya].GetComponent<Node>().enemyOnIt == true)
+                            {
+                                enemyDetected2 = true;
+                            }
+                            continue;
+                        }
+                    }
+                    ya++; xa++;
+                    if (dotObjects[xa, ya].GetComponent<Node>().state == Node._nodeState.dead &&
+    (dotObjects[xa, ya].GetComponent<Node>().lineIndex != 0))
+                    {
+                        item.GetComponent<Node>().lineIndex = dotObjects[xa, ya].GetComponent<Node>().lineIndex;
+                        if (item.GetComponent<Node>().lineIndex == 1)
+                        {
+                            inc1++;
+                            basket1[inc1] = item;
+                            listUnchecked.Remove(item);
+                            nom++;
+                            if (dotObjects[xa, ya].GetComponent<Node>().enemyOnIt == true)
+                            {
+                                enemyDetected1 = true;
+                            }
+                            continue;
+                        }
+                        else if (item.GetComponent<Node>().lineIndex == 2)
+                        {
+                            inc2++;
+                            basket2[inc2] = item;
+                            listUnchecked.Remove(item);
+                            nom++;
+                            if (dotObjects[xa, ya].GetComponent<Node>().enemyOnIt == true)
+                            {
+                                enemyDetected2 = true;
+                            }
+                            continue;
+                        }
+                    }
+                    ya -= 2;
+                    if (dotObjects[xa, ya].GetComponent<Node>().state == Node._nodeState.dead &&
+     (dotObjects[xa, ya].GetComponent<Node>().lineIndex != 0))
+                    {
+                        item.GetComponent<Node>().lineIndex = dotObjects[xa, ya].GetComponent<Node>().lineIndex;
+                        if (item.GetComponent<Node>().lineIndex == 1)
+                        {
+                            inc1++;
+                            basket1[inc1] = item;
+                            listUnchecked.Remove(item);
+                            nom++;
+                            if (dotObjects[xa, ya].GetComponent<Node>().enemyOnIt == true)
+                            {
+                                enemyDetected1 = true;
+                            }
+                            continue;
+                        }
+                        else if (item.GetComponent<Node>().lineIndex == 2)
+                        {
+                            inc2++;
+                            basket2[inc2] = item;
+                            listUnchecked.Remove(item);
+                            nom++;
+                            if (dotObjects[xa, ya].GetComponent<Node>().enemyOnIt == true)
+                            {
+                                enemyDetected2 = true;
+                            }
+                            continue;
+                        }
+                    }
+                }
+            }
+        }
+        foreach (GameObject item in dotObjects)
+        {
+            Node node = item.GetComponent<Node>();
+            if(node.state == Node._nodeState.permanent)
+            {
+                int xa = item.GetComponent<Node>().xx;
+                int ya = item.GetComponent<Node>().yy;
+                xa++;
+                if (dotObjects[xa, ya].GetComponent<Node>().state == Node._nodeState.dead &&
+                    (dotObjects[xa, ya].GetComponent<Node>().lineIndex != 0))
+                {
+                    item.GetComponent<Node>().lineIndex = dotObjects[xa, ya].GetComponent<Node>().lineIndex;
+                    if (item.GetComponent<Node>().lineIndex == 1)
+                    {
+                        inc1++;
+                        basket1[inc1] = item;
+                        listUnchecked.Remove(item);
+                        nom++;
+                        if (dotObjects[xa, ya].GetComponent<Node>().enemyOnIt == true)
+                        {
+                            enemyDetected1 = true;
+                        }
+                        continue;
+                    }
+                    else if (item.GetComponent<Node>().lineIndex == 2)
+                    {
+                        inc2++;
+                        basket2[inc2] = item;
+                        listUnchecked.Remove(item);
+                        nom++;
+                        if (dotObjects[xa, ya].GetComponent<Node>().enemyOnIt == true)
+                        {
+                            enemyDetected2 = true;
+                        }
+                        continue;
+                    }
+                }
+                ya++; xa--;
+                if (dotObjects[xa, ya].GetComponent<Node>().state == Node._nodeState.dead &&
+(dotObjects[xa, ya].GetComponent<Node>().lineIndex != 0))
+                {
+                    item.GetComponent<Node>().lineIndex = dotObjects[xa, ya].GetComponent<Node>().lineIndex;
+                    if (item.GetComponent<Node>().lineIndex == 1)
+                    {
+                        inc1++;
+                        basket1[inc1] = item;
+                        listUnchecked.Remove(item);
+                        nom++;
+                        if (dotObjects[xa, ya].GetComponent<Node>().enemyOnIt == true)
+                        {
+                            enemyDetected1 = true;
+                        }
+                        continue;
+                    }
+                    else if (item.GetComponent<Node>().lineIndex == 2)
+                    {
+                        inc2++;
+                        basket2[inc2] = item;
+                        listUnchecked.Remove(item);
+                        nom++;
+                        if (dotObjects[xa, ya].GetComponent<Node>().enemyOnIt == true)
+                        {
+                            enemyDetected2 = true;
+                        }
+                        continue;
+                    }
+                }
+            }
+        }
+        foreach (GameObject dot in basket1)
+        {
+            if (dot != null)
+            {
+                if (dot.GetComponent<Node>().enemyOnIt)
+                    enemyDetected1 = true;
+            }
+        }
+        foreach (GameObject dot in basket2)
+        {
+            if (dot != null)
+            {
+                if (dot.GetComponent<Node>().enemyOnIt)
+                    enemyDetected2 = true;
+            }
+        }
+        Debug.Log(enemyDetected1);
+        Debug.Log(enemyDetected2);
         foreach (GameObject dot in basket1)
         {
             if(dot != null)
             {
-                GameObject mesh = dot.GetComponent<Node>().mesh;
-                mesh.GetComponent<MeshRenderer>().material = deadZone;
+                if (!enemyDetected1)
+                {
+                    GameObject mesh = dot.GetComponent<Node>().mesh;
+                    mesh.GetComponent<MeshRenderer>().material = deadZone;
+                }
             }
         }
-        foreach(GameObject dot in dotObjects)
+        foreach (GameObject dot in line1Save)
+        {
+            if (dot != null)
+            {
+                if (!enemyDetected1)
+                {
+                    if (dot.GetComponent<Node>().mesh)
+                    {
+                        Debug.Log(dot.name);
+                        GameObject mesh = dot.GetComponent<Node>().mesh;
+                        mesh.GetComponent<MeshRenderer>().material = deadZone;
+                    }
+                }
+            }
+        }
+        foreach (GameObject dot in basket2)
+        {
+            if (dot != null)
+            {
+                if (!enemyDetected2)
+                {
+                    GameObject mesh = dot.GetComponent<Node>().mesh;
+                    mesh.GetComponent<MeshRenderer>().material = deadZone;
+                }
+            }
+        }
+        foreach (GameObject dot in line2Save)
+        {
+            if (dot != null)
+            {
+                if (!enemyDetected2)
+                {
+                    Debug.Log(dot.name);
+                    if (dot.GetComponent<Node>().mesh)
+                    {
+                        GameObject mesh = dot.GetComponent<Node>().mesh;
+                        mesh.GetComponent<MeshRenderer>().material = deadZone;
+                    }
+                }
+            }
+        }
+        foreach (GameObject dot in dotObjects)
         {
             dot.GetComponent<Node>().refresh = true;
         }

@@ -12,6 +12,8 @@ public class Boarder : MonoBehaviour {
     public GameObject rightPrefab;
     public GameObject downPrefab;
 	public bool eski = false;
+    public int enemyX = 30;
+    public int enemyY = 30;
 
     private void Awake()
     {
@@ -74,6 +76,7 @@ public class Boarder : MonoBehaviour {
             jj = 0; 
         }
         ii = 0;
+        dotObjects[enemyX, enemyY].GetComponent<Node>().enemyOnIt = true;//enemy koyunca sil bunu !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! bug yaratabilir
     }
 
 	void CircuitMeshCreate(int i,int j,int textureBorderX){

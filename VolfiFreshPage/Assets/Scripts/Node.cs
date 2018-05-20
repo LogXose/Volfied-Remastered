@@ -17,6 +17,7 @@ public class Node : MonoBehaviour
         down,
         no
     }
+    public int lineIndex = 0;
     public _childType childType = _childType.no;
     public GameObject boarder;
     [HideInInspector]
@@ -26,7 +27,6 @@ public class Node : MonoBehaviour
     public int xx;
     public int yy;
     public bool pointersAssigned = false;
-    private int counter = 0;
     public bool breakpoint = false;
     public bool drawCheck = false;
     public bool enemyOnIt = false;
