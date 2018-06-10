@@ -17,7 +17,7 @@ public class Boarder : MonoBehaviour {
 
     private void Awake()
     {
-        Application.targetFrameRate = 30;
+        Application.targetFrameRate = 20;
     }
 
     void Start(){
@@ -123,6 +123,7 @@ public class Boarder : MonoBehaviour {
         // m_Renderer.sharedMaterial = material;
         m_Renderer.material = material;
         dotObjects[i, j].GetComponent<Node>().mesh = circuit;
+        circuit.GetComponent<MeshController>().dot = dotObjects[i, j];
         circuit.transform.SetParent (this.Meshes.transform);
 	}
 

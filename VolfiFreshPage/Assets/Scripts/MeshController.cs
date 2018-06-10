@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MeshController : MonoBehaviour {
     public Material mat;
+    public GameObject dot;
 	// Use this for initialization
 	void Start () {
 		
